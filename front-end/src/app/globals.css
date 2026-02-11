@@ -1,0 +1,239 @@
+@import "tailwindcss";
+
+@theme {
+  --font-cairo: "Cairo", ui-sans-serif, system-ui;
+
+  --color-gold: #ffd700;
+  --color-gold-50: #fffdf0;
+  --color-gold-100: #fff9c4;
+  --color-gold-400: #fbbf24;
+  --color-gold-500: #ffd700;
+  --color-gold-600: #e6c200;
+  --color-gold-700: #c5a021;
+
+  --color-primary: #2563eb;
+  --color-primary-50: #f0f4ff;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-900: #1e3a8a;
+
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+
+  --breakpoint-xs: 400px;
+}
+
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: rgba(255, 255, 255, 0.9);
+  --card-border: rgba(35, 53, 76, 0.8);
+  --primary: #2563eb;
+  --accent: #ffd700;
+}
+
+.dark {
+  --background: #0f172a;
+  --foreground: #f1f5f9;
+  --card: rgba(30, 41, 59, 0.5);
+  --card-border: rgba(51, 65, 85, 0.4);
+  --primary: #3b82f6;
+  --accent: #ffd700;
+}
+
+@layer base {
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    @apply font-cairo antialiased selection:bg-gold-500/30;
+    background-image:
+      radial-gradient(circle at 0% 0%, rgba(37, 99, 235, 0.03) 0%, transparent 35%),
+      radial-gradient(circle at 100% 0%, rgba(255, 215, 0, 0.03) 0%, transparent 35%);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+
+  .dark body {
+    background-image:
+      radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 100% 0%, rgba(255, 215, 0, 0.05) 0%, transparent 40%),
+      linear-gradient(to bottom, #0f172a, #111827);
+  }
+}
+
+@layer components {
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+    will-change: transform;
+  }
+
+  .shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(90deg,
+        rgba(255, 255, 255, 0) 0,
+        rgba(255, 255, 255, 0.2) 20%,
+        rgba(255, 255, 255, 0.5) 60%,
+        rgba(255, 255, 255, 0));
+    animation: shimmer 3s infinite;
+  }
+
+  .glass-card {
+    background-color: var(--card);
+    /* Optimized blur for performance */
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--card-border);
+    @apply rounded-3xl shadow-sm transition-all duration-300;
+    will-change: transform, box-shadow;
+  }
+
+  .glass-card:hover {
+    @apply shadow-xl shadow-gold-500/5 -translate-y-1;
+    border-color: rgba(255, 215, 0, 0.2);
+  }
+
+  .gold-shimmer {
+    @apply relative overflow-hidden;
+    will-change: transform;
+  }
+
+  .gold-shimmer::before {
+    content: '';
+    @apply absolute inset-0 -translate-x-full;
+    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+    animation: gold-slide 4s infinite linear;
+  }
+
+  .gold-gradient-bg {
+    background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+    color: #1e293b;
+    /* Dark text for light metallic background */
+  }
+
+  .blue-gradient-bg {
+    background: linear-gradient(135deg, #2563eb, #3b82f6, #1d4ed8);
+    color: white;
+  }
+
+  .text-gradient-gold {
+    background: linear-gradient(to right, #bf953f, #aa771c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .premium-header {
+    @apply bg-slate-50/50 p-6 border-b border-slate-100;
+    transition: all 0.3s ease;
+  }
+
+  .dark .premium-header {
+    @apply border-white/5;
+    background-color: rgba(15, 23, 42, 0.4);
+    box-shadow: inset 0 0 25px rgba(59, 130, 246, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .dark .premium-header {
+      background-color: color-mix(in oklab, lab(9 0.39 -9.91) 50%, transparent);
+    }
+  }
+
+  .premium-footer {
+    @apply p-4 bg-slate-50/50 border-t border-slate-100;
+    transition: all 0.3s ease;
+  }
+
+  .dark .premium-footer {
+    @apply border-white/5;
+    background-color: rgba(15, 23, 42, 0.4);
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .dark .premium-footer {
+      background-color: color-mix(in oklab, lab(9 0.39 -9.91) 50%, transparent);
+    }
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes gold-slide {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ... existing animations ... */
+
+/* Custom Scrollbar for Premium Feel */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 dark:bg-slate-700 rounded-full hover:bg-slate-400;
+}
+
+/* Animations */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: white !important;
+    color: black !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+}
+
+.print-only {
+  display: none;
+}
+
+[dir="rtl"] .rtl {
+  direction: rtl;
+}
